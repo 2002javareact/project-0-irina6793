@@ -2,27 +2,21 @@
   "name": "project-0-irina6793",
   "version": "1.0.0",
   "description": "project-0",
-  "main": "index.js",
+  "main": "index.ts",
+  "scripts": {
+    "start": "nodemon --exec ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "express-session": "^1.17.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.2",
+    "nodemon": "^2.0.2",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/2002javareact/project-0-irina6793.git"
-  },
   "author": "Irina",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/2002javareact/project-0-irina6793/issues"
-  },
-  "homepage": "https://github.com/2002javareact/project-0-irina6793#readme"
-}
+  "license": "ISC"
+  }
