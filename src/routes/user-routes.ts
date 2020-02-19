@@ -19,4 +19,3 @@ userRoutes.post('', (req,res)=>{
             res.status(400).send('Please complete')
         }
 
-        
