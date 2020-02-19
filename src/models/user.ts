@@ -22,7 +22,7 @@ export class User {
           this.password = password;
           this.firstName = firstName;
           this.lastName = lastName;
-          this.email = email;
-
+		  this.email = email;
+		  this.role = role
 	   }
 	}
