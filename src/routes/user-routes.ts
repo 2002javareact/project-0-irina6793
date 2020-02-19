@@ -14,6 +14,9 @@ userRoutes.post('', (req,res)=>{
         role } = req.body
         if(username && password && emailAddress && id && firstName && lastName && role){
             user.push(new User(username,password,emailAddress,id,firstName,lastName,role))
+            res.sendStatus(201)
+        } else {
+            res.status(400).send('Please complete')
         }
-    
-}
+
+        
