@@ -1,5 +1,7 @@
 import * as express from 'express'
-import { User } from '../models/User'
+import { users } from '../database'
+import { User } from '../models/Users'
+import { authFactory, authCheckId } from '../middleware/auth-middleware'
 
 export const userRoutes = express.Router()
 
