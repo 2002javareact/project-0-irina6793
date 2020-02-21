@@ -36,8 +36,8 @@ app.post('/login', (req,res)=>{
           }
        }
           throw new BadCredentialsError()
-       }
+     }
        
        app.listen(2002, ()=>{
            console.log('app started on port 2002');
-       })
+    })
