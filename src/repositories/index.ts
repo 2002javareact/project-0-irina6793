@@ -1,10 +1,10 @@
 import { Pool } from 'pg';
 
 export const connectionPool:Pool= new Pool({
-      host:  process.env[//put data from computer'], //endpoint for db
-      user: process.env
-      password: process.env
-      database: process.env
+      host:  process.env['PROJECT_0_HOST'],
+      user: process.env['PROJECT_0_USER'],
+      password: process.env['PROJECT_0_PASSWORD'],
+      database: process.env['PROJECT_0_NAME'],
       port: 5432,
       max: 5
 })

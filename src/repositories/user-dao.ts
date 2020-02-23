@@ -1,7 +1,6 @@
 import { PoolClient } from 'pg';
 import { connectionPool } from ".";
 import { User } from "../models/User";
-import { BadCredentialsError} from '../errors/BadCredentialsError'
 import { InternalServerError } from "../errors/InternalServerError";
 import { userDTOToUserConverter } from "../util/user-dto-to-user-converter";
 import { UserDTO } from "../dtos/UserDTO";
@@ -19,13 +18,10 @@ export async function daoFindUserByUsernameAndPassword(username:string,password:
     } catch(e){
         console.log(e);
         if(e.message === 'User Not Found'){
-            throw new BadCredentialsError()
-        }else {
-            throw new InternalServerError()
+            throw new UserNotFoundError();
         }
-    } finally {
-        client && client.release()
-    }
+            throw new InternalServerError();    
+     }
 }
     export async function daoFindAllUsers():Promise<User[]>{
        let client:PoolClient
