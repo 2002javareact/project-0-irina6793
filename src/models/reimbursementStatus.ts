@@ -10,4 +10,3 @@ export class ReimbursementStatus{
        this.status=status
     }
 }
-

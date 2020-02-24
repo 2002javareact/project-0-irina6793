@@ -8,4 +8,3 @@ const sessionConfig = {
 }
 
 export const sessionMiddleware = session(sessionConfig)
-

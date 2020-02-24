@@ -11,4 +11,3 @@ export class ReimbursementType {
        this.type=type
     }
 }
-

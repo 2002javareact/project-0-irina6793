@@ -1,6 +1,6 @@
 export class ReimbursementDTO{
       reimbursement_id: number 
-	  author: number  
+	    author: number  
       amount: number  
       date_submitted: number 
       date_resolved: number 
@@ -19,7 +19,6 @@ export class ReimbursementDTO{
     resolver:number, 
     status:number, 
     type:number)
-
     {
        this.reimbursement_id=reimbursementId
        this.author=author

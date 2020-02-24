@@ -24,4 +24,4 @@ export class UserDTO {
             this.last_name = last_name
             this.role_name = role_name
         }
-}
+     }
