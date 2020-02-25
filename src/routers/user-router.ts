@@ -7,38 +7,19 @@ import { Role } from '../models/Role'
 
 export const userRouter = express.Router()
 
-userRouter.get('', [authFactory(['Admin']), async (req,res)=>{
+userRouter.get('/', [authFactory(['Admin']), async (req,res)=>{
     let users:User[] = await findAllUsers(); 
     res.json(User)
 }]) 
 
-userRouter.patch('/', authFactory(['Admin']), async (req,res)=>{
-  let { username, password, emailAddress, id, firstName, lastName, role
+userRouter.post('/login', async (req,res)=>{
+  let { username, password
       }: {
         username:string,
-        password:string,
-        emailAddress:string,
-        id:number,
-        firstName:string,
-        lastName:string,
-        role:string
+        password:string
       }= req.body
-        if(username && password && emailAddress && id && firstName && lastName && role){
-        let role1:Role =new Role(
-            0,
-            ""
-        )
-        let newUser = await saveOneUser(new User(
-            id,
-            username,
-            password,
-            firstName,
-            lastName,
-            emailAddress,
-            role1
-            
-        ))
-            res.status(201).json(newUser)
+        if(!username && !password){
+            res.status(400).send('Please include username and password')
         } else {
             res.status(400).send('Please complete the remaining user fields')
         }

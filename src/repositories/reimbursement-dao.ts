@@ -35,7 +35,7 @@ export async function daoSaveOneReimbursement(reimbursement):Promise<Reimburseme
   let client:PoolClient
   try { 
    client = await connectionPool.connect()
-   let result = await client.query('INSERT INTO project0.reimbursement (reimbursement_id)', [
+   let result = await client.query('INSERT INTO project0.reimbursement (reimbursementId, author, amount, dateSubmitted, dateResolved, description, resolver, status, type)', [
         reimbursement.reimbursmentId,
         reimbursement.author,
         reimbursement.amount,
@@ -49,8 +49,8 @@ export async function daoSaveOneReimbursement(reimbursement):Promise<Reimburseme
  );
       return reimbursementDTOToReimbursementConverter(result.rows[0])
    } catch(e){
-   throw new InternalServerError;
+        throw new InternalServerError;
     } finally {
-   client && client.release();
+        client && client.release();
   }
 }

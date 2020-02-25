@@ -9,6 +9,6 @@ export async function findReimbursementByStatusId(statusId:number): Promise<Reim
     return await daoFindReimbursementByUserId(userId)
  } 
 
- export async function saveOneReimbursement(reimbursement:number): Promise<Reimbursement>{
+ export async function saveOneReimbursement(reimbursement:Reimbursement): Promise<Reimbursement>{
     return await daoSaveOneReimbursement(reimbursement)
  } 
