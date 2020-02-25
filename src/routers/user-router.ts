@@ -1,8 +1,9 @@
 import * as express from 'express'
+import { authFactory, authCheckId } from '../middleware/auth-middleware'
+import { findAllUsers, saveOneUser, findUserById } from '../services/user-services'
 import { User } from '../models/User'
-import { authAdminMiddleware, authUserMiddleware, authFactory, authCheckId } from '../middleware/auth-midleware'
-import { findAllUsers, saveOneUser, findUserById } from '../services/user-service'
 import { UserDTO } from '../dtos/UserDTO'
+import { Role } from '../models/Role'
 
 export const userRouter = express.Router()
 
@@ -11,29 +12,32 @@ userRouter.get('', [authFactory(['Admin']), async (req,res)=>{
     res.json(User)
 }]) 
 
-userRouter.post('', authFactory(['Admin']), async (req,res)=>{
-    let { username, password, 
-        emailAddress, id,
-        firstName, lastName,
-        role } : {
-            username:string,
-            password:string,
-            emailAddress:string,
-            id:number,
-            firstName:string,
-            lastName:string,
-            role:string
-        } = req.body
+userRouter.patch('/', authFactory(['Admin']), async (req,res)=>{
+  let { username, password, emailAddress, id, firstName, lastName, role
+      }: {
+        username:string,
+        password:string,
+        emailAddress:string,
+        id:number,
+        firstName:string,
+        lastName:string,
+        role:string
+      }= req.body
         if(username && password && emailAddress && id && firstName && lastName && role){
-            let newUser = await saveOneUser(new UserDTO(
-                username,
-                password,
-                emailAddress,
-                0,
-                firstName,
-                lastName,
-                role
-            ))
+        let role1:Role =new Role(
+            0,
+            ""
+        )
+        let newUser = await saveOneUser(new User(
+            id,
+            username,
+            password,
+            firstName,
+            lastName,
+            emailAddress,
+            role1
+            
+        ))
             res.status(201).json(newUser)
         } else {
             res.status(400).send('Please complete the remaining user fields')

@@ -2,8 +2,9 @@ import * as express from 'express'
 import * as bodyparser from 'body-parser'
 import { loggingMiddleware } from './middleware/logging-middleware'
 import { userRouter } from './routers/user-router'
+import { reimbursementRouter } from './routers/reimbursement-router'
 import { sessionMiddleware } from './middleware/session-middleware'
-import { findUserByUsernameAndPassword} from './services/user-service'
+import { findUserByUsernameAndPassword} from './services/user-services'
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use(loggingMiddleware)
 app.use(sessionMiddleware)
 
 app.use('/users', userRouter)
+app.use('/reimbursemnts', reimbursementRouter)
 
 app.post('/login', async (req,res)=>{
     const {username, password} = req.body

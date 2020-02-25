@@ -1,7 +1,8 @@
 import * as express from 'express'
 import { Reimbursement } from '../models/Reimbursement'
-import { authFactory, authCheckId } from '../middleware/auth-midleware'
-import { FindReimbursementByUserId, saveOneReimbursement } from '../services/user-service'
+import { authFactory, authCheckId } from '../middleware/auth-middleware'
+import { daoFindReimbursementByStatusId, daoFindReimbursementByUserId } from '../repositories/reimbursement-dao'
+import { saveOneReimbursement} from '../services/reimbursement-services'
 
 export const reimbursementRouter = express.Router()
 
@@ -19,7 +20,7 @@ reimbursementRouter.get('/status/:statusId', authFactory(['FinanceManager']), as
          }
      })
 
-     reimbursementRouter.get('/user/:userId', authFactory(['FinanceManager']), async (req,res)=>{
+reimbursementRouter.get('/user/:userId', authFactory(['FinanceManager']), async (req,res)=>{
         const userId = +req.params.userId  
            if(isNaN(userId)){
                res.sendStatus(400)
@@ -32,24 +33,25 @@ reimbursementRouter.get('/status/:statusId', authFactory(['FinanceManager']), as
              }
          })
 
-      reimbursementRouter.post('', authFactory(['Admin']), async (req,res)=>{
-            let { author, amount, dateSubmitted, dateResolved, description,
+reimbursementRouter.post('', authFactory(['Admin']), async (req,res)=>{
+            const { author, amount, dateSubmitted, dateResolved, description,
                   resolver, status, type
-                   } = req.body
-                if(author&&amount&&dateSubmitted&&dateResolved&&description&&resolver&&status&&type){
-                    let newUser = await saveOneReimbursement(new Reimbursement(
-                        author,
-                        amount,
-                        dateSubmitted,
-                        0,
-                        dateResolved,
-                        description,
-                        resolver,
-                        status,
-                        type
-                     ))
-                    res.status(201)
+                   } = req.body;
+                   try{
+                    if(author&&amount&&dateSubmitted&&dateResolved&&description&&resolver&&status&&type){
+                        let result = saveOneReimbursement(new Reimbursement(
+                            0,
+                            author,
+                            amount,
+                            dateSubmitted,
+                            dateResolved,
+                            description,
+                            resolver,
+                            status,
+                            type
+                        ));
+                        res.status(201).json(result)
                 } else {
                     res.status(400).send('Please complete the remaining user fields')
                 }
-            })
+            }

@@ -1,9 +1,9 @@
 export class ReimbursementDTO{
-      reimbursement_id: number 
+      reimbursementId: number 
 	    author: number  
       amount: number  
-      date_submitted: number 
-      date_resolved: number 
+      dateSubmitted: number 
+      dateResolved: number 
       description: string 
       resolver: number 
       status: number 
@@ -20,11 +20,11 @@ export class ReimbursementDTO{
     status:number, 
     type:number)
     {
-       this.reimbursement_id=reimbursementId
+       this.reimbursementId=reimbursementId
        this.author=author
        this.amount=amount
-       this.date_submitted=dateSubmited
-       this.date_resolved=dateResolved
+       this.dateSubmitted=dateSubmited
+       this.dateResolved=dateResolved
        this.description=description
        this.resolver=resolver
        this.status=status

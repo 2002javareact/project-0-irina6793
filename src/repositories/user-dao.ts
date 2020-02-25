@@ -36,15 +36,15 @@ export async function daoFindUserByUsernameAndPassword(username:string,password:
     }
 }
 
-export async function daoSaveOneUser(newUser:UserDTO):Promise<User> {
+export async function daoSaveOneUser(newUser:User):Promise<User> {
        let client:PoolClient
        try { 
         client = await connectionPool.connect()
-        let roleId = (await client.query('SELECT * FROM public.roles WHERE role_name = $1', [newUser.role_name])).rows[0].role_id
+        let roleId = (await client.query('SELECT * FROM public.roles WHERE role = $1', [newUser.roleId])).rows[0].role_id
         let result = await client.query('INSERT INTO public.users (username, "password", email, first_name, last_name, "role") values ($1,$2,$3,$4,$5,$6) RETURNING user_id;',
-        [newUser.username, newUser.password, newUser.email, newUser.first_name, newUser.last_name, roleId])
-        newUser.user_id = result.rows[0].user_id
-        return userDTOToUserConverter(newUser)
+        [newUser.username, newUser.password, newUser.email, newUser.firstName, newUser.lastName, roleId])
+        newUser.userId = result.rows[0].user_id
+        return userDTOToUserConverter(userDTO)
     } catch(e){
         throw new InternalServerError()
     } finally {

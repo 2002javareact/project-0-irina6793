@@ -10,7 +10,7 @@ export async function findAllUsers():Promise<User[]>{
    return await daoFindAllUsers()
 }
 
-export async function saveOneUser(newUser:UserDTO):Promise<User>{
+export async function saveOneUser(newUser:User):Promise<User>{
     return await daoSaveOneUser(newUser)
 }
 
