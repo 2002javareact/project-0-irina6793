@@ -10,7 +10,8 @@ export async function daoFindUserByUsernameAndPassword(username:string,password:
     let client:PoolClient
     try {
         client = await connectionPool.connect()
-        let results = await client.query(`SELECT * FROM public.user U inner join public.role R on U."role" = R.role_id  WHERE username = $1  and "password" = $2`, [username,password])
+        let results = await client.query(`SELECT * FROM public.user U inner join public.role R on r."role_id" = R.role_id  WHERE username = $1  and "password" = $2`, [username,password])
+        console.log(results)
         if(results.rowCount === 0){
              throw new Error('User Not Found')
         }
@@ -27,7 +28,7 @@ export async function daoFindUserByUsernameAndPassword(username:string,password:
        let client:PoolClient
        try{
            client = await connectionPool.connect()
-           let results = await client.query('SELECT * FROM public.user U inner join public.role R on U."role" = R.role_id')
+           let results = await client.query('SELECT * FROM public.user U inner join public.role_id R on U."role" = R.role_id')
            return results.rows.map(userDTOToUserConverter)
     }catch(e){
         throw new InternalServerError()
@@ -40,7 +41,9 @@ export async function daoSaveOneUser(newUser:User):Promise<User> {
        let client:PoolClient
        try { 
         client = await connectionPool.connect()
-        let roleId = (await client.query('SELECT * FROM public.role WHERE role = $1', [newUser.role.roleId])).rows[0].role_id
+        let roleId = (await client.query('SELECT * FROM public.role WHERE role = $1', [newUser.role])).rows[0].roleId
+       console.log('this is dao   ' +roleId);
+       
         let result = await client.query('INSERT INTO public.user (username, "password", email, first_name, last_name, "role") values ($1,$2,$3,$4,$5,$6) RETURNING user_id;',
         [newUser.username, newUser.password, newUser.email, newUser.firstName, newUser.lastName, roleId])
         newUser.userId = result.rows[0].user_id
@@ -56,7 +59,7 @@ export async function daoFindUserById(id:number):Promise<User>{
     let client:PoolClient
     try{
         client = await connectionPool.connect()
-        let result = await client.query('SELECT * FROM public.user U inner join public.role R on U."role" = R.role_id WHERE U.user_id = $1', [id])
+        let result = await client.query('SELECT * FROM public.user U inner join public.role R on "r.role_id" = R.role_id WHERE U.user_id = $1', [id])
         if(result.rowCount === 0){
             throw new Error('User Not Found')
         }
