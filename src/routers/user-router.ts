@@ -7,23 +7,11 @@ import { Role } from '../models/Role'
 
 export const userRouter = express.Router()
 
-userRouter.get('/', [authFactory(['Admin']), async (req,res)=>{
+userRouter.get('/', [authFactory(['Admin','Finance_Manager']), async (req,res)=>{
     let users:User[] = await findAllUsers(); 
     res.json(User)
 }]) 
 
-userRouter.post('/login', async (req,res)=>{
-  let { username, password
-      }: {
-        username:string,
-        password:string
-      }= req.body
-        if(!username && !password){
-            res.status(400).send('Please include username and password')
-        } else {
-            res.status(400).send('Please complete the remaining user fields')
-        }
-    })
 
   userRouter.get('/:id', authFactory(['Admin', 'User']), authCheckId, async (req,res)=>{
        const id = +req.params.id  

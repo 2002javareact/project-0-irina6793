@@ -1,18 +1,16 @@
-export const authAdminMiddleware = (req,res,next)=>{
+export const authAdminMiddleware = (req,res)=>{
      if(!req.session.user){
          res.status(401).send('Please Login')
      }else if(req.session.user.role === 'Admin'){
-         next()
      } else {
           res.status(403).send('This page is unauthorized')
      }
   } 
 
-export const authUserMiddleware = (req,res,next) => {
+export const authUserMiddleware = (req,res) => {
      if(!req.session.user){
          res.status(401).send('Please Login')
      }else if(req.session.user.role === 'Admin' || req.session.user.id === +req.params.id ){
-        next()
      }else {
         res.status(403).send('This page is unauthorized')
      }
@@ -37,9 +35,8 @@ export const authUserMiddleware = (req,res,next) => {
           }
         } 
       }
-    export const authCheckId = (req,res,next)=>{
+    export const authCheckId = (req,res)=>{
           if(req.session.user.id === +req.params.id){
-             next()
           }else{
             res.status(401).send('This page has expired')
           }

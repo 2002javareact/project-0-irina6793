@@ -8,7 +8,7 @@ export async function daoFindReimbursementByStatusId(statusId:number):Promise<Re
   let client:PoolClient
   try {
     client = await connectionPool.connect()
-    const results = await client.query('SELECT * FROM project0.reimbursement R WHERE status_id = $1', [statusId]);
+    const results = await client.query('SELECT * FROM public.reimbursement R WHERE status_id = $1', [statusId]);
         return reimbursementDTOToReimbursementConverter(results.rows[0]);
     } catch(e){
       throw new InternalServerError();    
