@@ -8,7 +8,7 @@ export async function daoFindReimbursementByStatusId(statusId:number):Promise<Re
   let client:PoolClient
   try {
     client = await connectionPool.connect()
-    const results = await client.query('SELECT * FROM public.reimbursement R WHERE status_id = $1', [statusId]);
+    const results = await client.query(`SELECT * FROM public.reimbursement R WHERE status_id = $1`, [statusId]);
         return reimbursementDTOToReimbursementConverter(results.rows[0]);
     } catch(e){
       throw new InternalServerError();    
@@ -21,7 +21,7 @@ export async function daoFindReimbursementByStatusId(statusId:number):Promise<Re
   let client:PoolClient
   try {
     client = await connectionPool.connect()
-    let results = await client.query('SELECT * FROM project0.reimbursement R WHERE user_id = $1', [userId])
+    let results = await client.query('SELECT * FROM public.reimbursement R WHERE author_id = $1', [userId])
     return reimbursementDTOToReimbursementConverter(results.rows[0]);
     } catch(e){
       throw new InternalServerError();    
@@ -35,7 +35,7 @@ export async function daoSaveOneReimbursement(reimbursement):Promise<Reimburseme
   let client:PoolClient
   try { 
    client = await connectionPool.connect()
-   let result = await client.query('INSERT INTO project0.reimbursement (reimbursementId, author, amount, dateSubmitted, dateResolved, description, resolver, status, type)', [
+   let result = await client.query(`INSERT INTO public.reimbursement (reimbursementId, author, amount, dateSubmitted, dateResolved, description, resolver, status, type)`, [
         reimbursement.reimbursmentId,
         reimbursement.author,
         reimbursement.amount,

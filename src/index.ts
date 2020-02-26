@@ -27,8 +27,6 @@ app.post('/login', async (req,res)=>{
              req.session.user = user
              res.status(200).json(user)
         } catch(e){
-          //console.log(e);
-          
           res.status(e.status).send(e.message)
         }
       }

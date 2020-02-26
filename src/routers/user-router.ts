@@ -13,7 +13,7 @@ userRouter.get('/', [authFactory(['Admin','Finance_Manager']), async (req,res)=>
 }]) 
 
 
-  userRouter.get('/:id', authFactory(['Admin', 'User']), authCheckId, async (req,res)=>{
+  userRouter.get('/:id', authFactory(['Admin', 'Finance_Manager']), authCheckId, async (req,res)=>{
        const id = +req.params.id  
           if(isNaN(id)){
               res.sendStatus(400)

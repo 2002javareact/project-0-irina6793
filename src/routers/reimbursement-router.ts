@@ -20,7 +20,7 @@ reimbursementRouter.get('/status/:statusId', authFactory(['FinanceManager']), as
     }
 })
 
-reimbursementRouter.get('/user/:userId', authFactory(['FinanceManager']), async (req, res) => {
+reimbursementRouter.get('/author/user/:userId', authFactory(['Finance_Manager']), async (req, res) => {
     const userId = +req.params.userId
     if (isNaN(userId)) {
         res.sendStatus(400)
@@ -33,7 +33,7 @@ reimbursementRouter.get('/user/:userId', authFactory(['FinanceManager']), async 
     }
 })
 
-reimbursementRouter.post('', authFactory(['Admin']), async (req, res) => {
+reimbursementRouter.post('/', authFactory(['Admin', 'Finance_Manager' ]), async (req, res) => {
     const { author, amount, dateSubmitted, dateResolved, description,
         resolver, status, type
     } = req.body;
@@ -55,6 +55,5 @@ reimbursementRouter.post('', authFactory(['Admin']), async (req, res) => {
             res.status(400).send('Please complete the remaining user fields')
         }
     } catch(e){
-
-    }
+  }
 })

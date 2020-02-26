@@ -9,9 +9,8 @@ import { UserNotFoundError } from "../errors/UserNotFoundError";
 export async function daoFindUserByUsernameAndPassword(username:string,password:string):Promise<User>{
     let client:PoolClient
     try {
-        ``
         client = await connectionPool.connect()
-        let results = await client.query(`SELECT * FROM public.user U inner join public.role R on U."role" = R.role_id  WHERE username = $1  and "password" = $2'`, [username,password])
+        let results = await client.query(`SELECT * FROM public.user U inner join public.role R on U."role" = R.role_id  WHERE username = $1  and "password" = $2`, [username,password])
         if(results.rowCount === 0){
              throw new Error('User Not Found')
         }
