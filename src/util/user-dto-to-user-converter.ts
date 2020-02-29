@@ -9,5 +9,6 @@ export function userDTOToUserConverter(userDTO:UserDTO):User{
         userDTO.first_name,
         userDTO.last_name,
         userDTO.email,
-        userDTO.role)
-}
+        userDTO.role
+      )
+    }
