@@ -37,9 +37,9 @@ reimbursementRouter.get('/author/user/:userId', authFactory(['Admin','Finance-Ma
  })
 
 reimbursementRouter.post('', authFactory(['Admin', 'Finance-Manager']), async (req, res) => {
-     const { author, amount, dateSubmitted, dateResolved, description, resolver, status, type
+     const {author, amount, dateSubmitted, dateResolved, description, resolver, status, type
            } = req.body;
-    if (author && amount && dateSubmitted && dateResolved && description && resolver && status && type) {
+     if (author && amount && dateSubmitted && dateResolved && description && resolver && status && type) {
         let result = submitReimbursement(new Reimbursement(0, author, amount, dateSubmitted, dateResolved,
         description, resolver, status, type));
                res.status(201).json(result)

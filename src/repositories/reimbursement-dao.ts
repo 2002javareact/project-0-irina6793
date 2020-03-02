@@ -10,36 +10,31 @@ export async function daoFindReimbursementByStatusId(statusId:number):Promise<Re
   let client:PoolClient
   try {
     client = await connectionPool.connect()
-        let result = await client.query('select * from public."reimbursement" as r inner join public."reimbursement_status" as rs on rs.status_id=r.status where rs.status_id = $1',[statusId]);
+        let result = await client.query('select * from reimbursement r where status=$1 order by datesubmitted asc',[statusId]);
         if(result.rowCount === 0){
             throw new Error('User Not Found')
         }
           return reimbursementDTOToReimbursementConverter(result.rows[0])
       }catch(e){
-        console.log(e);
-        
-        if(e.message ==='User Not Found'){
-            throw new ReimbursementNotFound()
-        }
+         if(e.message ==='User Not Found'){
+           throw new ReimbursementNotFound()
+      }
            throw new InternalServerError()
-        }finally{
-        client && client.release()
-        }
+       }finally{
+          client && client.release()
+      }
   }
     
 export async function daoFindReimbursementByUserId(userId:number):Promise<Reimbursement>{
   let client:PoolClient
   try {
-    console.log(`befor selection im user Id   ${userId}`);
-    
     client = await connectionPool.connect()
-    let results = await client.query('select * from public."reimbursement" as r inner join public."reimbursement_status" as rs on rs.status_id=r.status where r.author= $1', [userId]);
-      //  if (results.rowCount === 0) {
-      //   throw new Error("Reimbursement Not Found");
-      //  }
+    let results = await client.query('select * from reimbursement r where author=$1 order by datesubmitted desc', [userId]);
+        if (results.rowCount === 0) {
+         throw new Error("Reimbursement Not Found");
+        }
      return reimbursementDTOToReimbursementConverter(results.rows[0]);
     }catch(e){
-      // console.log(e);
       console.error(e.stack)
       if (e.message === "Reimbursement Not Found") {
         throw new ReimbursementNotFound();
@@ -54,7 +49,7 @@ export async function daoSubmitReimbursement(newReimbursement:ReimbursementDTO):
   let client:PoolClient
   try { 
    client = await connectionPool.connect()
-   let result = await client.query('INSERT INTO public."reimbursement" (author, amount , "datesubmitted", "dateresolved", description, resolver, status, "type") values ($1,$2,$3,$4,$5,$6,$7,$8)',
+   let result = await client.query('insert into public.reimbursement(author, amount, datesubmitted, dateresolved, resolver, status, "type") values($1, $2, $3, $4, $5, $6, $7, $8)',
     [
       newReimbursement.author,
       newReimbursement.amount,
@@ -62,7 +57,7 @@ export async function daoSubmitReimbursement(newReimbursement:ReimbursementDTO):
       newReimbursement.dateResolved,
       newReimbursement.description,
       newReimbursement.status,
-       newReimbursement.resolver,
+      newReimbursement.resolver,
       newReimbursement.type
     ]   
   );
