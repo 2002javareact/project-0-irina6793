@@ -1,33 +1,36 @@
-export class ReimbursementDTO{
-      reimbursementId:number 
-	    author:number  
-      amount:number  
-      dateSubmitted:number 
-      dateResolved:number 
-      description:string 
-      resolver:number 
-      status:number 
-      type:number 
 
-  constructor(
-    reimbursementId:number, 
-    author:number,
-    amount:number,
-    dateSubmited:number, 
-    dateResolved:number, 
-    description:string, 
-    resolver:number, 
-    status:number, 
-    type:number)
+export class ReimbursementDTO{
+    reimbursementid: number // primary key
+	author: number  // foreign key -> User, not null
+	amount: number// not null
+    datesubmitted: string
+    dateresolved: string
+    description: string // not null
+    resolver: number // foreign key -> User
+    status: number // foreign ey -> ReimbursementStatus, not null
+    type: number // foreign key -> ReimbursementType
+    constructor
+    ( 
+        reimbursementid: number, 
+        author: number,
+        amount: number,
+        datesubmitted: string,
+        dateresolved: string,
+        description: string,
+        resolver: number,
+        status: number,
+        type: number
+     )
     {
-       this.reimbursementId=reimbursementId
-       this.author=author
-       this.amount=amount
-       this.dateSubmitted=dateSubmited
-       this.dateResolved=dateResolved
-       this.description=description
-       this.resolver=resolver
-       this.status=status
-       this.type=type
+        this.reimbursementid = reimbursementid
+        this.author = author
+        this.amount = amount
+        this.datesubmitted = datesubmitted
+        this.dateresolved= dateresolved
+      
+        this.description = description
+        this.resolver = resolver
+        this.status = status
+        this.type = type
     }
-}
+  }

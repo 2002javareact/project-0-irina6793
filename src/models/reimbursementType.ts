@@ -1,13 +1,12 @@
-export class ReimbursementType {
-    typeId: number;
-    type: string;
+export class ReimbursementType
+{
+  typeId: number // primary key
+  type: string // not null, unique
 
-    constructor(
-        typeId:number,
-        type:string
-    )
-    {
-       this.typeId=typeId;
-       this.type=type
-    }
+constructor(typeId: number, type: string )
+{
+  this.typeId = typeId
+  this.type = type
+}
+
 }

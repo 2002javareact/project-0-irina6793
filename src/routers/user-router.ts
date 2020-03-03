@@ -1,12 +1,17 @@
 import * as express from 'express'
-import { authFactory, authCheckId } from '../middleware/auth-middleware'
+import { authFactory, authCheckId } from '../middleware/auth-midleware'
 import { findAllUsers, updateUser, findUserById } from '../services/user-services'
 import { User } from '../models/User'
 import { Role } from '../models/Role'
 
 export const userRouter = express.Router()
 
-userRouter.get('', [authFactory(['Admin','Finance-Manager']), async (req,res)=>{
+userRouter.get('', [authFactory(['Admin', 'Finance-Manager']),  async (req,res)=>
+{
+    console.log("hello")
+    console.log("USERid is " + req.session.user.userId )
+    console.log("USERid is " + req.session.user.userid )
+    
     let users:User[] = await findAllUsers(); 
     res.json(users)
 }])
@@ -27,7 +32,8 @@ userRouter.get('/:id', authFactory(['Admin', 'Finance-Manager']), authCheckId, a
             }
         })
 
-userRouter.patch("", [authFactory(["Admin"]),async (req, res) => {
+userRouter.patch("", [authFactory(["Admin"]),async (req, res) => 
+{
         let {userId, username, firstName, lastName,  email, role}: {
              userId: number;
              username: string;

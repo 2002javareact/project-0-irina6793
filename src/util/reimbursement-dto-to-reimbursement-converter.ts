@@ -4,11 +4,11 @@ import { Reimbursement } from "../models/Reimbursement";
 export function reimbursementDTOToReimbursementConverter(ReimbursementDTO:ReimbursementDTO):Reimbursement{
 
     return new Reimbursement(
-        ReimbursementDTO.reimbursementId,
+        ReimbursementDTO.reimbursementid,
         ReimbursementDTO.author,
         ReimbursementDTO.amount,
-        ReimbursementDTO.dateSubmitted,
-        ReimbursementDTO.dateResolved,
+        ReimbursementDTO.datesubmitted,
+        ReimbursementDTO.dateresolved,
         ReimbursementDTO.description,
         ReimbursementDTO.status,
         ReimbursementDTO.resolver,

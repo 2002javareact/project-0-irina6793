@@ -1,13 +1,19 @@
-export class Role {
-    roleId: number;
-    role: string;
+export const admin = 'Admin'
+export const user = 'User'
+export const financeManager = 'Finance-Manager'
 
-    constructor(
-        roleId:number,
-        role:string
-    )
-    {
-        this.roleId=roleId;
-        this.role=role;
-    }
+
+export  class Role
+{
+    roleid: number // primary key
+    role: string // not null, unique
+
+constructor(roleid: number, role: string )
+{
+    this.roleid = roleid
+    this.role = role
+
 }
+
+
+  }

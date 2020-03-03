@@ -1,6 +1,6 @@
 import * as express from 'express'
 import { Reimbursement } from '../models/Reimbursement'
-import { authFactory, authCheckId } from '../middleware/auth-middleware'
+import { authFactory, authCheckId } from '../middleware/auth-midleware'
 import { daoFindReimbursementByStatusId, daoFindReimbursementByUserId } from '../repositories/reimbursement-dao'
 import { submitReimbursement, updateReimbursement } from '../services/reimbursement-services'
 
@@ -50,10 +50,11 @@ reimbursementRouter.post('', authFactory(['Admin', 'Finance-Manager']), async (r
 
   reimbursementRouter.patch("", [authFactory(["Admin", "Finance-Manager"]),async (req, res) => {
     let {author, amount, dateSubmitted, dateResolved, description, resolver, status, type}: {
+        
          author: number;
          amount: number;
-         dateSubmitted: number;
-         dateResolved: number;
+         dateSubmitted: Date;
+         dateResolved: Date;
          description: string;
          resolver: number;
          status: number;

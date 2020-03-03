@@ -14,7 +14,7 @@ export async function findReimbursementByStatusId(statusId:number): Promise<Reim
     return await daoSubmitReimbursement(reimbursement)
  } 
 
- export async function updateReimbursement(reimbursement:Reimbursement): Promise<Reimbursement>{
-     return await daoUpdateReimbursement(reimbursement)
+ export async function updateReimbursement(update:Reimbursement): Promise<Reimbursement>{
+     return await daoUpdateReimbursement(update)
  }
 

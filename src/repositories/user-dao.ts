@@ -4,14 +4,14 @@ import { User } from "../models/User";
 import { InternalServerError } from "../errors/InternalServerError";
 import { userDTOToUserConverter } from "../util/user-dto-to-user-converter";
 import { UserNotFoundError } from "../errors/UserNotFoundError";
-import { BadCredentialsError } from '../errors/BadCredentialslError';
+import { BadCredentialsError } from "../errors/BadCredentialsError"
 import { findUserById } from '../services/user-services';
 
 export async function daoFindUserByUsernameAndPassword(username:string,password:string):Promise<User>{
     let client:PoolClient
     try {
         client = await connectionPool.connect()
-        let results = await client.query('select * from public."user" as u inner join public."role" as r on u."user_id"=r.role_id WHERE username = $1  and "password" = $2',[username,password]);
+        let results = await client.query('select * from project0."user" as u inner join project0."role" as r on u."userid"=r.roleid WHERE username = $1  and "password" = $2',[username,password]);
         if(results.rowCount === 0){
              throw new Error('User Not Found')
         }
@@ -33,7 +33,7 @@ export async function daoFindAllUsers():Promise<User[]>{
            client = await connectionPool.connect()
            //console.log(`This is dao    User before sellection ${User}`);
            
-           let results = await client.query('select * from public."user" as u inner join public."role" as r on u."user_id"=r.role_id');
+           let results = await client.query('select * from project0."user" as u inner join project0."role" as r on u."userid"=r.roleid');
            return results.rows.map(userDTOToUserConverter);
        }catch(e){
            throw new InternalServerError()
@@ -48,16 +48,16 @@ export async function daoUpdateUser(newUser:User):Promise<User> {
         let userId = newUser.userId
         let prevUser = await findUserById(userId);
 
-        prevUser.username = newUser.username || prevUser.username;
+        prevUser.userName = newUser.userName || prevUser.userName;
         prevUser.firstName = newUser.firstName || prevUser.firstName;
         prevUser.lastName = newUser.lastName || prevUser.lastName;
         prevUser.email = newUser.email || prevUser.email;
         prevUser.role = newUser.role || prevUser.role;
  
         await client.query(
-            'UPDATE public."user" set username = $1, first_name = $2, last_name = $3, email = $4, role = $5 WHERE user_id = $6',
+            'UPDATE project0."user" set username = $1, firstname = $2, lastname = $3, email = $4, role = $5 WHERE userid = $6',
             [
-                prevUser.username, 
+                prevUser.userName, 
                 prevUser.email,
                 prevUser.firstName, 
                 prevUser.lastName, 
@@ -81,8 +81,9 @@ export async function daoFindUserById(id:number):Promise<User>{
         console.log(`Hello iam User From Dao Before Hit DB ${id} `);
         
         client = await connectionPool.connect()
-        let result = await client.query('select * from public."user" u , public."role" r where u."role" =r.role_id and U.user_id = $1', [id]);
-        if(result.rowCount === 0){
+        let result = await client.query('select * from project0."user" u , project0."role" r where u."role" =r.roleid and U.userid = $1', [id]);
+        if(result.rowCount === 0)
+        {
             throw new Error('User Not Found')
         }
         return userDTOToUserConverter(result.rows[0])
