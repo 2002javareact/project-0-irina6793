@@ -16,7 +16,6 @@ export async function daoFindReimbursementByStatusId(statusId:number):Promise<Re
         }
           return reimbursementDTOToReimbursementConverter(result.rows[0])
       }catch(e){
-        console.log("dao error " + e)
          if(e.message ==='User Not Found'){
            throw new ReimbursementNotFound()
       }
@@ -36,8 +35,6 @@ export async function daoFindReimbursementByUserId(userId:number):Promise<Reimbu
         }
      return reimbursementDTOToReimbursementConverter(results.rows[0]);
     }catch(e){
-      console.log("dao error "+e)
-      console.error(e.stack)
       if (e.message === "Reimbursement Not Found") {
         throw new ReimbursementNotFound();
       }
@@ -55,19 +52,17 @@ export async function daoSubmitReimbursement(newReimbursement:Reimbursement):Pro
     [
       newReimbursement.author,
       newReimbursement.amount,
-      newReimbursement.dateSubmitted,
-      newReimbursement.dateResolved,
+      newReimbursement.datesubmitted,
+      newReimbursement.dateresolved,
       newReimbursement.description,
       newReimbursement.status,
       newReimbursement.resolver,
       newReimbursement.type
     ]   
   );
-  newReimbursement.reimbursementId = result.rows[0].reimbursementId; 
+  newReimbursement.reimbursementid = result.rows[0].reimbursementId; 
     return newReimbursement;
    }catch(e){
-    console.log("dao error " + e)
-
       throw new InternalServerError;
     }finally {
       client && client.release();
@@ -78,12 +73,12 @@ export async function daoUpdateReimbursement(newReimbursement:Reimbursement):Pro
   let client:PoolClient
   try { 
     client = await connectionPool.connect()
-    let reimbursementId = newReimbursement.reimbursementId;
+    let reimbursementId = newReimbursement.reimbursementid;
     let prevReimbursement = (await client.query('SELECT * FROM project0."reimbursement"', [reimbursementId])).rows[0];
       prevReimbursement.author = newReimbursement || prevReimbursement.author,
       prevReimbursement.amount = newReimbursement || prevReimbursement.amount,
-      prevReimbursement.dateSubmitted = newReimbursement || prevReimbursement.dateSubmitted,
-      prevReimbursement.dateResolved = newReimbursement || prevReimbursement.dateResolved,
+      prevReimbursement.datesubmitted = newReimbursement || prevReimbursement.datesubmitted,
+      prevReimbursement.dateresolved = newReimbursement || prevReimbursement.dateresolved,
       prevReimbursement.description = newReimbursement || prevReimbursement.description,
       prevReimbursement.status = newReimbursement || prevReimbursement.status,
       prevReimbursement.resolver = newReimbursement || prevReimbursement.resolver,
@@ -94,8 +89,8 @@ export async function daoUpdateReimbursement(newReimbursement:Reimbursement):Pro
     [
       prevReimbursement.author,
       prevReimbursement.amount,
-      prevReimbursement.date_submitted,
-      prevReimbursement.date_resolved,
+      prevReimbursement.datesubmitted,
+      prevReimbursement.dateresolved,
       prevReimbursement.description,
       prevReimbursement.resolver,
       prevReimbursement.status,
@@ -105,7 +100,6 @@ export async function daoUpdateReimbursement(newReimbursement:Reimbursement):Pro
   );
      return prevReimbursement;
     }catch(e){
-      console.log("dao error " + e)
        throw new InternalServerError();
   }finally{
        client && client.release

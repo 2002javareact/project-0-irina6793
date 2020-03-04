@@ -8,45 +8,24 @@ export const reimbursementRouter = express.Router()
 
 reimbursementRouter.get('/status/:statusId', authFactory(['Admin', 'Finance-Manager']), async (req, res) => 
 
-{    /**Super important part about roles */
-
-     console.log("Role is " + req.session.user.role.role )
-
-    
-
+{    
      const id = +req.params.statusId
-
-    if (isNaN(id)) 
-
+     if (isNaN(id)) 
+   {
+     res.sendStatus(400)
+    } else {
+       try 
     {
-
-        res.sendStatus(400)
-
-    } else 
-
-    {
-
-        try 
-
-        {
-
-            let status = await daoFindReimbursementByStatusId(id)
-
-            res.json(status)
-
-        } catch (e) {
-
-            res.status(e.status).send(e.message)
-
-        }
-
-    }
-
+     let status = await daoFindReimbursementByStatusId(id)
+          res.json(status)
+     } catch (e) {
+         res.status(e.status).send(e.message)
+     }
+   }
 })
 
 reimbursementRouter.get('/author/user/:userId', authFactory(['Admin','Finance-Manager']), async (req, res) => {
      const userId = +req.params.userId
-     console.log(`hi im user id in router    ${userId}`);
      
      if(isNaN(userId)) {
          res.sendStatus(400)
@@ -61,10 +40,10 @@ reimbursementRouter.get('/author/user/:userId', authFactory(['Admin','Finance-Ma
  })
 
 reimbursementRouter.post('', authFactory(['Admin', 'Finance-Manager']), async (req, res) => {
-     const {author, amount, dateSubmitted, dateResolved, description, resolver, status, type
+     const {author, amount, datesubmitted, dateresolved, description, resolver, status, type
            } = req.body;
-     if (author && amount && dateSubmitted && dateResolved && description && resolver && status && type) {
-        let result = submitReimbursement(new Reimbursement(0, author, amount, dateSubmitted, dateResolved,
+     if (author && amount && datesubmitted && dateresolved && description && resolver && status && type) {
+        let result = submitReimbursement(new Reimbursement(0, author, amount, datesubmitted, dateresolved,
         description, resolver, status, type));
                res.status(201).json(result)
     } else {
@@ -73,18 +52,17 @@ reimbursementRouter.post('', authFactory(['Admin', 'Finance-Manager']), async (r
   })
 
   reimbursementRouter.patch("", [authFactory(["Admin", "Finance-Manager"]),async (req, res) => {
-    let {author, amount, dateSubmitted, dateResolved, description, resolver, status, type}: {
-        
+    let {author, amount, datesubmitted, dateresolved, description, resolver, status, type}: {
          author: number;
          amount: number;
-         dateSubmitted: Date;
-         dateResolved: Date;
+         datesubmitted: Date;
+         dateresolved: Date;
          description: string;
          resolver: number;
          status: number;
          type:number;
         } = req.body;
-           if (author && (amount || dateSubmitted || dateResolved || description || resolver || status || type)) {          
+           if (author && (amount || datesubmitted || dateresolved || description || resolver || status || type)) {          
             let update = await updateReimbursement(req.body);
             res.json(update);
           }

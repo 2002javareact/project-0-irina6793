@@ -1,20 +1,30 @@
 import { Role } from "./Role";
 
 export  class User 
-{ userId: number;
-  userName: string;
+{ 
+  userid: number;
+  username: string;
   password: string;  
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   email: string;
-  role: Role; // classn Object
-  constructor(userId:number, username:string,password: string, firstname:string,lastname:string,email:string,role:Role)
-  { this.userId  = userId;
-    this.userName = username;
+  role: Role; 
+  constructor(
+    userid:number, 
+    username:string,
+    password: string, 
+    firstname:string,
+    lastname:string,
+    email:string,
+    role:Role
+    )
+  { 
+    this.userid  = userid;
+    this.username = username;
     this.password = password;
-    this.firstName = firstname;
-    this.lastName = lastname;
+    this.firstname = firstname;
+    this.lastname = lastname;
     this.email = email;
     this.role = role;
-  } //constructor
+  } 
 }

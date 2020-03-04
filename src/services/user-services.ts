@@ -18,7 +18,5 @@ export async function updateUser(newUser:any):Promise<User>{
 }
 
 export async function findUserById(id:number):Promise<User>{
-   //console.log('Now We are in service');
-   
    return await daoFindUserById(id)
 }

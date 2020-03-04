@@ -32,7 +32,6 @@ export async function daoFindAllUsers():Promise<User[]>{
        let client:PoolClient
        try{
            client = await connectionPool.connect()
-           //console.log(`This is dao    User before sellection ${User}`);
            
            let results = await client.query('select * from project0."user" as u inner join project0."role" as r on u."userid"=r.roleid');
            return results.rows.map(userDTOToUserConverter);
@@ -49,20 +48,20 @@ export async function daoUpdateUser(newUser:UserDTO):Promise<User> {
         let userId = newUser.userid
         let prevUser = await findUserById(userId);
 
-        prevUser.userName = newUser.username || prevUser.userName;
-        prevUser.firstName = newUser.firstname || prevUser.firstName;
-        prevUser.lastName = newUser.lastname || prevUser.lastName;
+        prevUser.username = newUser.username || prevUser.username;
+        prevUser.firstname = newUser.firstname || prevUser.firstname;
+        prevUser.lastname = newUser.lastname || prevUser.lastname;
         prevUser.email = newUser.email || prevUser.email;
-        prevUser.role.roleid=newUser.roleid //= newUser.role || prevUser.role;
+        prevUser.role.roleid=newUser.roleid 
         prevUser.role.role=newUser.role
  
         await client.query(
             'UPDATE project0."user" set username = $1, firstname = $2, lastname = $3, email = $4, role = $5 WHERE userid = $6',
             [
-                prevUser.userName, 
+                prevUser.username, 
                 prevUser.email,
-                prevUser.firstName, 
-                prevUser.lastName, 
+                prevUser.firstname, 
+                prevUser.lastname, 
                 prevUser.role
              ]
             )

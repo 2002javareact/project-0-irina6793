@@ -1,14 +1,14 @@
 export class ReimbursementStatus
 {
-  statusId: number // primary key
-  status: string // not null, unique
+  statusid: number 
+  status: string 
 
-
-constructor( statusId: number, status: string )
+constructor( 
+  statusid: number, 
+  status: string 
+  )
 {
-  this.statusId = statusId // primary key
-  this.status   = status// not null, unique
-}
-
-
+  this.statusid = statusid
+  this.status   = status
+ }
 }
