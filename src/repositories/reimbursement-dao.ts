@@ -10,7 +10,7 @@ export async function daoFindReimbursementByStatusId(statusId:number):Promise<Re
   let client:PoolClient
   try {
     client = await connectionPool.connect()
-        let result = await client.query('select * from reimbursement r where status=$1 order by datesubmitted asc',[statusId]);
+        let result = await client.query('select * from  project0.reimbursement r where status=$1 order by datesubmitted asc',[statusId]);
         if(result.rowCount === 0){
             throw new Error('User Not Found')
         }
@@ -30,7 +30,7 @@ export async function daoFindReimbursementByUserId(userId:number):Promise<Reimbu
   let client:PoolClient
   try {
     client = await connectionPool.connect()
-    let results = await client.query('select * from reimbursement r where author=$1 order by datesubmitted desc', [userId]);
+    let results = await client.query('select * from  project0.reimbursement r where author=$1 order by datesubmitted desc', [userId]);
         if (results.rowCount === 0) {
          throw new Error("Reimbursement Not Found");
         }

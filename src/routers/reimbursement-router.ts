@@ -6,18 +6,42 @@ import { submitReimbursement, updateReimbursement } from '../services/reimbursem
 
 export const reimbursementRouter = express.Router()
 
-reimbursementRouter.get('/status/:statusId', authFactory(['Admin', 'Finance-Manager']), async (req, res) => {
-    const statusId = +req.params.statusId
-    if (isNaN(statusId)) {
+reimbursementRouter.get('/status/:statusId', authFactory(['Admin', 'Finance-Manager']), async (req, res) => 
+
+{    /**Super important part about roles */
+
+     console.log("Role is " + req.session.user.role.role )
+
+    
+
+     const id = +req.params.statusId
+
+    if (isNaN(id)) 
+
+    {
+
         res.sendStatus(400)
-    } else {
-        try {
-            let reimbursement = await daoFindReimbursementByStatusId(statusId);
-            res.json(reimbursement)
-        }catch(e){
+
+    } else 
+
+    {
+
+        try 
+
+        {
+
+            let status = await daoFindReimbursementByStatusId(id)
+
+            res.json(status)
+
+        } catch (e) {
+
             res.status(e.status).send(e.message)
+
         }
+
     }
+
 })
 
 reimbursementRouter.get('/author/user/:userId', authFactory(['Admin','Finance-Manager']), async (req, res) => {

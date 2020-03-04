@@ -3,6 +3,7 @@ import { authFactory, authCheckId } from '../middleware/auth-midleware'
 import { findAllUsers, updateUser, findUserById } from '../services/user-services'
 import { User } from '../models/User'
 import { Role } from '../models/Role'
+import { UserDTO } from "../dtos/UserDTO";
 
 export const userRouter = express.Router()
 
@@ -32,20 +33,34 @@ userRouter.get('/:id', authFactory(['Admin', 'Finance-Manager']), authCheckId, a
             }
         })
 
-userRouter.patch("", [authFactory(["Admin"]),async (req, res) => 
+        userRouter.patch('', authFactory(['Admin']), async (req,res)=>
 {
-        let {userId, username, firstName, lastName,  email, role}: {
-             userId: number;
+        let {userid, username,password, firstname, lastname,  email, role}: {
+             userid: number;
              username: string;
-             firstName: string;
-             lastName: string;
+             password:string;
+             firstname: string;
+             lastname: string;
              email: string;
-             role: string;
+             role: Role;
             } = req.body;
-               if (userId && (username || firstName || lastName || email || role)) {          
+
+            console.log("=====================================")
+
+console.log("userid"+userid);
+console.log("username"+username);
+console.log("password"+password);
+console.log("firstname"+firstname);
+console.log("lastname"+lastname);
+console.log("email"+email);
+console.log("role name ="+role.role);
+console.log("role id="+role.roleid);
+let user:UserDTO=new UserDTO( userid, username, password, firstname, lastname,  email, role.roleid, role.role)
+
+               if (userid && (username || firstname || password ||lastname || email || role)) {          
                 let update = await updateUser(req.body);
                 res.json(update);
               }
             }
-          ]);
+          );
 

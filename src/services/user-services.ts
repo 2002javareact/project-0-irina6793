@@ -13,7 +13,7 @@ export async function findAllUsers():Promise<User[]>{
    return await daoFindAllUsers()
 }
 
-export async function updateUser(newUser:User):Promise<User>{
+export async function updateUser(newUser:any):Promise<User>{
     return await daoUpdateUser(newUser)
 }
 

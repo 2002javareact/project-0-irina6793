@@ -1,6 +1,7 @@
 import { PoolClient } from 'pg';
 import { connectionPool } from ".";
 import { User } from "../models/User";
+import { UserDTO } from "../dtos/UserDTO";
 import { InternalServerError } from "../errors/InternalServerError";
 import { userDTOToUserConverter } from "../util/user-dto-to-user-converter";
 import { UserNotFoundError } from "../errors/UserNotFoundError";
@@ -41,18 +42,19 @@ export async function daoFindAllUsers():Promise<User[]>{
         client && client.release()
     }
 }
-export async function daoUpdateUser(newUser:User):Promise<User> {
+export async function daoUpdateUser(newUser:UserDTO):Promise<User> {
        let client:PoolClient
        try { 
         client = await connectionPool.connect()
-        let userId = newUser.userId
+        let userId = newUser.userid
         let prevUser = await findUserById(userId);
 
-        prevUser.userName = newUser.userName || prevUser.userName;
-        prevUser.firstName = newUser.firstName || prevUser.firstName;
-        prevUser.lastName = newUser.lastName || prevUser.lastName;
+        prevUser.userName = newUser.username || prevUser.userName;
+        prevUser.firstName = newUser.firstname || prevUser.firstName;
+        prevUser.lastName = newUser.lastname || prevUser.lastName;
         prevUser.email = newUser.email || prevUser.email;
-        prevUser.role = newUser.role || prevUser.role;
+        prevUser.role.roleid=newUser.roleid //= newUser.role || prevUser.role;
+        prevUser.role.role=newUser.role
  
         await client.query(
             'UPDATE project0."user" set username = $1, firstname = $2, lastname = $3, email = $4, role = $5 WHERE userid = $6',
@@ -67,6 +69,7 @@ export async function daoUpdateUser(newUser:User):Promise<User> {
 
           return prevUser
        }catch(e){
+           console.log("error from userDAO "+e)
           throw new InternalServerError()
        }finally {
            client && client.release()
